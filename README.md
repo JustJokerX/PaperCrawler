@@ -3,11 +3,7 @@ Crawler used to crawl papers mostly from the conferences.
 
 # How to use it 
 Just put CVPR/NIPSXXXX.py file to anywhere you want to save the paper,
-and use the 
-···
-python CVPR20XX.py 
-···
-to download, the papers will be saved 
+and use the `python CVPR20XX.py` to download, the papers will be saved 
 to a newly created file.
 
 # Pay attention
