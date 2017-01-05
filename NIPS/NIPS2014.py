@@ -1,10 +1,13 @@
-#coding=utf-8
+# coding=utf-8
 """
 This file is used to make a crawl
 """
+import __init__
 import re
 import urllib
 import os
+from PaperCrawler.utility import prgbar
+
 
 def get_html(url):
     """Get the html """
@@ -12,23 +15,34 @@ def get_html(url):
     html = page.read()
     return html
 
+
 def get_pdf(html):
     """ xxx"""
     reg = r'href="/paper/(.+?)"'
     pdfre = re.compile(reg)
     pdflist = re.findall(pdfre, html)
     dir_name = 'NIPS2014'
+    maxrows = len(pdflist)
+    pbar = prgbar.ProgressBar(total=maxrows)
+
     if os.path.exists(dir_name) is False:
         os.mkdir(dir_name)
-    for pdfurl in pdflist:
-        filename = dir_name+'/'+ pdfurl+'.pdf'
-        print 'http://papers.nips.cc/paper/'+pdfurl+'.pdf'
+
+    for idx, pdfurl in enumerate(pdflist):
+        filename = dir_name + '/' + pdfurl + '.pdf'
+        pbar.log('http://papers.nips.cc/paper/' + pdfurl + '.pdf')
         if os.path.exists(filename) is True:
-            print 'Exist'
+            pbar.log('Exist')
         else:
-            urllib.urlretrieve('http://papers.nips.cc/paper/'+pdfurl+'.pdf', filename)
+            urllib.urlretrieve(
+                'http://papers.nips.cc/paper/' + pdfurl + '.pdf', filename)
+        pbar.update(index=(idx + 1))
+
+    pbar.finish()
 
 
-HTML = get_html('http://papers.nips.cc/book/'
-                'advances-in-neural-information-processing-systems-27-2014')
-print get_pdf(HTML)
+if __name__ == '__main__':
+    HTML = get_html(
+        'http://papers.nips.cc/book/'
+        'advances-in-neural-information-processing-systems-27-2014')
+    print get_pdf(HTML)

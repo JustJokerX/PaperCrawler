@@ -1,10 +1,13 @@
-#coding=utf-8
+# coding=utf-8
 """
 This file is used to make a crawl
 """
+import __init__
 import re
 import urllib
 import os
+from PaperCrawler.utility import prgbar
+
 
 def get_html(url):
     """Get the html """
@@ -12,22 +15,32 @@ def get_html(url):
     html = page.read()
     return html
 
+
 def get_pdf(html):
     """ xxx"""
     reg = r'href="(.+?\.pdf)">pdf'
     pdfre = re.compile(reg)
     pdflist = re.findall(pdfre, html)
     dir_name = 'ICML2016'
+    maxrows = len(pdflist)
+    pbar = prgbar.ProgressBar(total=maxrows)
+
     if os.path.exists(dir_name) is False:
         os.mkdir(dir_name)
-    for pdfurl in pdflist:
+
+    for idx, pdfurl in enumerate(pdflist):
         filename = dir_name + '/' + pdfurl
-        print 'http://jmlr.org/proceedings/papers/v48/' + pdfurl
+        pbar.log('http://jmlr.org/proceedings/papers/v48/' + pdfurl)
         if os.path.exists(filename) is True:
-            print 'Exist'
+            pbar.log('Exist')
         else:
-            urllib.urlretrieve('http://jmlr.org/proceedings/papers/v48/'+pdfurl, filename)
+            urllib.urlretrieve(
+                'http://jmlr.org/proceedings/papers/v48/' + pdfurl, filename)
+        pbar.update(index=(idx + 1))
+
+    pbar.finish()
 
 
-HTML = get_html("http://jmlr.org/proceedings/papers/v48/")
-print get_pdf(HTML)
+if __name__ == '__main__':
+    HTML = get_html("http://jmlr.org/proceedings/papers/v48/")
+    print get_pdf(HTML)

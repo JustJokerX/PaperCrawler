@@ -1,10 +1,12 @@
-#coding=utf-8
+# coding=utf-8
 """
 This file is used to make a crawl
 """
+import __init__
 import re
 import urllib
 import os
+from PaperCrawler.utility import prgbar
 
 
 def get_html(url):
@@ -20,19 +22,27 @@ def get_pdf(html):
     pdfre = re.compile(reg)
     pdflist = re.findall(pdfre, html)
     dir_name = 'CVPR2013'
+    maxrows = len(pdflist)
+    pbar = prgbar.ProgressBar(total=maxrows)
+
     if os.path.exists(dir_name) is False:
         os.mkdir(dir_name)
-    for pdfurl in pdflist:
+
+    for idx, pdfurl in enumerate(pdflist):
         reg2 = r'papers/(.+?\.pdf)'
         pdfre2 = re.compile(reg2)
         filename = dir_name + '/' + re.findall(pdfre2, pdfurl)[0]
-        print 'http://www.cv-foundation.org/openaccess/' + pdfurl
+        pbar.log('http://www.cv-foundation.org/openaccess/' + pdfurl)
         if os.path.exists(filename) is True:
-            print 'Exist'
+            pbar.log('Exist')
         else:
             urllib.urlretrieve(
                 'http://www.cv-foundation.org/openaccess/' + pdfurl, filename)
+        pbar.update(index=(idx + 1))
+
+    pbar.finish()
 
 
-HTML = get_html("http://www.cv-foundation.org/openaccess/CVPR2013.py")
-print get_pdf(HTML)
+if __name__ == '__main__':
+    HTML = get_html("http://www.cv-foundation.org/openaccess/CVPR2013.py")
+    print get_pdf(HTML)

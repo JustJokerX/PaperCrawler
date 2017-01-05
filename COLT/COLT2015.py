@@ -21,7 +21,7 @@ def get_pdf(html):
     reg = r'href="(.+?\.pdf)">pdf'
     pdfre = re.compile(reg)
     pdflist = re.findall(pdfre, html)
-    dir_name = 'ICML2015'
+    dir_name = 'COLT2015'
     maxrows = len(pdflist)
     pbar = prgbar.ProgressBar(total=maxrows)
 
@@ -30,17 +30,17 @@ def get_pdf(html):
 
     for idx, pdfurl in enumerate(pdflist):
         filename = dir_name + '/' + pdfurl
-        pbar.log('http://jmlr.org/proceedings/papers/v37/' + pdfurl)
+        pbar.log('http://jmlr.org/proceedings/papers/v40/' + pdfurl)
         if os.path.exists(filename) is True:
             pbar.log('Exist')
         else:
             urllib.urlretrieve(
-                'http://jmlr.org/proceedings/papers/v37/' + pdfurl, filename)
+                'http://jmlr.org/proceedings/papers/v40/' + pdfurl, filename)
         pbar.update(index=(idx + 1))
 
     pbar.finish()
 
 
 if __name__ == '__main__':
-    HTML = get_html("http://jmlr.org/proceedings/papers/v37/")
-    print get_pdf(HTML)
+    HTML = get_html("http://jmlr.org/proceedings/papers/v40/")
+    get_pdf(HTML)

@@ -1,4 +1,4 @@
-# coding=utf-8
+#coding=utf-8
 """
 This file is used to make a crawl
 """
@@ -21,26 +21,23 @@ def get_pdf(html):
     reg = r'href="(.+?\.pdf)">pdf'
     pdfre = re.compile(reg)
     pdflist = re.findall(pdfre, html)
-    dir_name = 'ICML2015'
-    maxrows = len(pdflist)
-    pbar = prgbar.ProgressBar(total=maxrows)
-
+    dir_name = 'COLT2016'
     if os.path.exists(dir_name) is False:
         os.mkdir(dir_name)
-
+    maxrows = len(pdflist)
+    pbar = prgbar.ProgressBar(total=maxrows)
     for idx, pdfurl in enumerate(pdflist):
         filename = dir_name + '/' + pdfurl
-        pbar.log('http://jmlr.org/proceedings/papers/v37/' + pdfurl)
+        pbar.log('http://jmlr.org/proceedings/papers/v49/' + pdfurl)
         if os.path.exists(filename) is True:
             pbar.log('Exist')
         else:
             urllib.urlretrieve(
-                'http://jmlr.org/proceedings/papers/v37/' + pdfurl, filename)
+                'http://jmlr.org/proceedings/papers/v49/' + pdfurl, filename)
         pbar.update(index=(idx + 1))
-
     pbar.finish()
 
 
 if __name__ == '__main__':
-    HTML = get_html("http://jmlr.org/proceedings/papers/v37/")
+    HTML = get_html("http://jmlr.org/proceedings/papers/v49/")
     print get_pdf(HTML)
