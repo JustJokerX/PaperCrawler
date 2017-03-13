@@ -18,7 +18,7 @@ class ProgressBar:
     def log(self, s):
         sys.stdout.write(' ' * (self.width + 11) + '\r')
         sys.stdout.flush()
-        print s
+        print(s)
         progress = self.width * self.count / self.total
         sys.stdout.write('[{:.2%}]: '.format((self.count * 1.0 + 0.0001) /
                                              self.total))

@@ -6,7 +6,7 @@ import __init__
 import re
 import urllib
 import os
-from PaperCrawler.utility import prgbar
+from utility import prgbar
 
 
 def get_html(url):
@@ -45,4 +45,4 @@ if __name__ == '__main__':
     HTML = get_html(
         'http://papers.nips.cc/book/'
         'advances-in-neural-information-processing-systems-26-2013')
-    print get_pdf(HTML)
+    print(get_pdf(HTML))

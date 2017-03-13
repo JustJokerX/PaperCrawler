@@ -3,10 +3,11 @@
 This file is used to make a crawl
 """
 import __init__
+import os
 import re
 import urllib
-import os
-from PaperCrawler.utility import prgbar
+
+from utility import prgbar
 
 
 def get_html(url):
@@ -43,4 +44,4 @@ def get_pdf(html):
 
 if __name__ == '__main__':
     HTML = get_html("http://jmlr.org/proceedings/papers/v40/")
-    get_pdf(HTML)
+    print(get_pdf(HTML))
