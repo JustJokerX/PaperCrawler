@@ -19,7 +19,7 @@ class ProgressBar:
         sys.stdout.write(' ' * (self.width + 11) + '\r')
         sys.stdout.flush()
         print(s)
-        progress = self.width * self.count / self.total
+        progress = (int)(self.width * self.count / self.total)
         sys.stdout.write('[{:.2%}]: '.format((self.count * 1.0 + 0.0001) /
                                              self.total))
         sys.stdout.write('#' * progress + '-' * (self.width - progress) + '\r')
